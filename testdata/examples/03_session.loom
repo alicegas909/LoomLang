@@ -1,0 +1,23 @@
+bpm 120
+
+# sound design
+pluck = synth {
+  param cutoff = 1200
+  osc  = (saw + saw (freq * 1.01)) * 0.5
+  filt = osc >> lpf cutoff 0.3
+  out  = filt * adsr 0.01 0.3 0.4 0.5
+}
+kit = channel (synth { out = sample })
+
+# mixer
+echo = bus (delay 0.375 0.5)
+lead = channel pluck
+lead.fx = hpf 120
+lead.gain = 0.8
+lead.send.echo = 0.3
+
+# music
+kit  <- [bd*4, [~ hh]*4, [~ sn]*2]
+lead <- [a2 c3 e3 g3]*2 |> every 4 rev
+lead.pan <- sine 0.25
+lead.cutoff <- <800 1600 3200>

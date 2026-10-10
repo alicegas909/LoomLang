@@ -1,0 +1,6 @@
+# live-editing commands
+show lead
+@4 lead <- [a2 ~ e3 ~]
+lead <- [a2 c3 e3 g3]*2 |> fast 2
+  |> every 4 rev
+hush

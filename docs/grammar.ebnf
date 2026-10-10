@@ -1,0 +1,47 @@
+(* Language grammar, v0.1. Terminals are in single quotes.                  *)
+(* Spacing only matters next to pattern literals: a modifier must touch the *)
+(* element before it. NEWLINE follows the statement-end rule: a newline ends *)
+(* a statement unless brackets are unbalanced or the line ends with a binary *)
+(* operator (in files, a next line starting with |> or >> also continues).   *)
+
+(* statements *)
+program     = { [ statement ] NEWLINE } ;
+statement   = [ '@' NUMBER ] ( assign | attach | expr ) ;
+assign      = path '=' expr ;
+attach      = path '<-' expr ;
+path        = IDENT { '.' IDENT } ;
+
+(* expressions, lowest precedence first *)
+expr        = lambda | pipe ;
+lambda      = '\' IDENT { IDENT } '->' expr ;
+pipe        = compose { '|>' compose } ;
+compose     = sum { '>>' sum } ;
+sum         = product { ( '+' | '-' ) product } ;
+product     = unary { ( '*' | '/' ) unary } ;
+unary       = '-' unary | apply ;
+apply       = access { access } ;
+access      = primary { '.' IDENT } ;
+primary     = NUMBER | NOTE | STRING | IDENT
+            | '(' expr ')'
+            | synth
+            | pattern { modifier } ;
+
+synth       = 'synth' '{' { synth_stmt ( NEWLINE | ';' ) } '}' ;
+synth_stmt  = 'param' IDENT '=' expr | IDENT '=' expr ;
+
+(* pattern mode *)
+pattern     = '[' layers ']' | '<' sequence '>' ;
+layers      = sequence { ',' sequence } ;
+sequence    = { step } ;
+step        = element { modifier } ;
+element     = NOTE | NUMBER | WORD | '~' | '$' IDENT | '(' expr ')' | pattern ;
+modifier    = '*' factor | '/' factor | '!' [ INT ] | '@' NUMBER | '?' [ NUMBER ]
+            | '(' INT ',' INT [ ',' INT ] ')' ;
+factor      = NUMBER | '$' IDENT | '(' expr ')' | '<' sequence '>' ;
+
+(* lexical *)
+(* NOTE    = [a-g] [sf]? [0-9]   c4 = MIDI 60, a4 = 69                     *)
+(* IDENT   = [A-Za-z_][A-Za-z0-9_]*   (an identifier matching NOTE is a note) *)
+(* WORD    = a non-note identifier in pattern mode (sample name)            *)
+(* NUMBER  = digits [ '.' digits ]                                          *)
+(* Comments start with '#'. Keywords: synth, param.                         *)

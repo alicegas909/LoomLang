@@ -1,0 +1,4 @@
+# one channel, three layers stacked in a single pattern
+bpm 120
+kit = channel (synth { out = sample })
+kit <- [bd*4, [~ hh]*4, [~ sn]*2]

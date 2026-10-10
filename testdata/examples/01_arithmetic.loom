@@ -1,0 +1,4 @@
+# plain expressions, bindings, lambdas
+x = 1 + 2 * 3
+double = \x -> x * 2
+double 21
