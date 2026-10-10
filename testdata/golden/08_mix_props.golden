@@ -1,0 +1,53 @@
+ExprStmt
+  Apply
+    Ident bpm
+    Number 110
+
+Assign target=flute
+  SynthDef
+    SynthStmt param cutoff
+      Number 2000
+    SynthStmt param res
+      Number 0.2
+    SynthStmt osc
+      Ident tri
+    SynthStmt out
+      Binary >>
+        Ident osc
+        Apply
+          Ident lpf
+          Ident cutoff
+          Ident res
+
+Assign target=pad
+  SynthDef
+    SynthStmt param attack
+      Number 0.4
+    SynthStmt out
+      Binary *
+        Ident saw
+        Apply
+          Ident adsr
+          Ident attack
+          Number 0.5
+          Number 0.7
+          Number 1.0
+
+Assign target=lead
+  Apply
+    Ident channel
+    Ident flute
+
+Assign target=pad.channel
+  Apply
+    Ident channel
+    Ident pad
+
+Assign target=lead.cutoff
+  Number 800
+
+Assign target=lead.send.reverb
+  Number 0.25
+
+Assign target=pad.gain
+  Number 0.6

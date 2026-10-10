@@ -1,0 +1,58 @@
+ExprStmt
+  Apply
+    Ident bpm
+    Number 96
+
+Assign target=kit
+  Apply
+    Ident channel
+    SynthDef
+      SynthStmt out
+        Ident sample
+
+Attach target=kit quant=4
+  PatternExpr
+    Stack
+      Seq
+        Fast
+          Atom Ident bd
+          Factor
+            Number 4
+      Seq
+        Fast
+          Seq
+            Rest
+            Atom Ident hh
+          Factor
+            Number 8
+
+Attach target=kit quant=8
+  PatternExpr
+    Seq
+      Atom Ident bd
+      Atom Ident sn
+      Atom Ident bd
+      Atom Ident sn
+
+ExprStmt
+  Apply
+    Ident solo
+    Ident kit
+
+ExprStmt
+  Apply
+    Ident mute
+    Ident lead
+
+ExprStmt
+  Apply
+    Ident unmute
+    Ident lead
+
+ExprStmt
+  Apply
+    Ident show
+    Ident kit
+
+ExprStmt
+  Ident hush

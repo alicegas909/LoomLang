@@ -1,0 +1,6 @@
+# nested patterns, euclid, degrade, weight and repeat modifiers
+bpm 132
+lead <- [[c4 e4] g4, [a4 ~]*2]
+bass <- <c2 g2> |> every 2 rev |> fast 2
+drums <- [bd(3,8), [~ cp]*4, [~ ~ ht?0.4]!2]
+chords <- [c3 e3 g3]*2 / 2

@@ -1,0 +1,54 @@
+ExprStmt
+  Apply
+    Ident bpm
+    Number 128
+
+Assign target=double
+  Lambda (x)
+    Binary *
+      Ident x
+      Number 2
+
+Assign target=transpose
+  Lambda (n semi)
+    Binary +
+      Ident n
+      Ident semi
+
+Attach target=lead
+  Binary |>
+    Binary |>
+      PatternExpr
+        Seq
+          Atom Note c3
+          Atom Note e3
+          Atom Note g3
+      Apply
+        Ident fast
+        Number 2
+    Apply
+      Ident every
+      Number 4
+      Ident rev
+
+Attach target=lead
+  Binary |>
+    PatternExpr
+      Seq
+        Atom Note c3
+        Atom Note e3
+        Atom Note g3
+    Apply
+      Ident every
+      Number 4
+      Lambda (x)
+        Binary >>
+          Ident x
+          Ident rev
+
+Assign target=total
+  Binary +
+    Number 1
+    Binary *
+      Number 2
+      Number 3

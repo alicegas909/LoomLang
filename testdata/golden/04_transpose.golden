@@ -1,0 +1,40 @@
+ExprStmt
+  Apply
+    Ident bpm
+    Number 100
+
+Assign target=pluck
+  SynthDef
+    SynthStmt osc
+      Binary *
+        Ident saw
+        Number 0.5
+    SynthStmt out
+      Binary *
+        Ident osc
+        Apply
+          Ident adsr
+          Number 0.01
+          Number 0.2
+          Number 0.3
+          Number 0.4
+
+Assign target=lead
+  Apply
+    Ident channel
+    Ident pluck
+
+Attach target=lead
+  Binary +
+    PatternExpr
+      Seq
+        Atom Note a2
+        Atom Note c3
+        Atom Note e3
+        Atom Note g3
+    PatternExpr
+      Alt
+        Atom Number 0
+        Atom Number 3
+        Atom Number 5
+        Atom Number 7

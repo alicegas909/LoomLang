@@ -1,0 +1,17 @@
+Assign target=x
+  Binary +
+    Number 1
+    Binary *
+      Number 2
+      Number 3
+
+Assign target=double
+  Lambda (x)
+    Binary *
+      Ident x
+      Number 2
+
+ExprStmt
+  Apply
+    Ident double
+    Number 21

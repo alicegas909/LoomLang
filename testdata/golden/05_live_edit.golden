@@ -1,0 +1,35 @@
+ExprStmt
+  Apply
+    Ident show
+    Ident lead
+
+Attach target=lead quant=4
+  PatternExpr
+    Seq
+      Atom Note a2
+      Rest
+      Atom Note e3
+      Rest
+
+Attach target=lead
+  Binary |>
+    Binary |>
+      PatternExpr
+        Fast
+          Seq
+            Atom Note a2
+            Atom Note c3
+            Atom Note e3
+            Atom Note g3
+          Factor
+            Number 2
+      Apply
+        Ident fast
+        Number 2
+    Apply
+      Ident every
+      Number 4
+      Ident rev
+
+ExprStmt
+  Ident hush

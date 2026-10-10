@@ -14,9 +14,11 @@ lead = channel pluck
 lead <- [a2 c3 e3 g3]*2 |> every 4 rev
 ```
 
-**Status:** scaffold only. Packages hold documented stubs, plus a few real pieces
-(`Rat`, `Env`, the unit registry, `FakeClock`). The stubs were written without a
-compiler, so run `make fmt && make test` once. The lexer is written; the parser is next.
+**Status:** scaffold for the audio side, with the language front end filling in.
+M0 (10 example programs), M1 (lexer, parser, AST printer, fuzzing, golden dumps,
+per-statement error recovery) and M2 (curried tree-walking evaluator for plain
+expressions, plus a readline REPL) are done; `synth`, `channel`, `attach` and
+patterns still report a "not yet" error naming their milestone.
 
 ## Layout
 
@@ -66,10 +68,11 @@ make fmt      # run once: stubs were written without a compiler
 make run
 ```
 
-The module has no third-party dependencies yet. Add them when you reach the milestone:
+The only third-party dependency so far is readline (M2). Add the rest when you
+reach their milestones:
 
 ```text
-M2  go get github.com/ergochat/readline
+M2  github.com/ergochat/readline   # done
 M5  go get github.com/gen2brain/malgo
 M6  go get github.com/go-audio/wav
 M8  go get gitlab.com/gomidi/midi/v2 github.com/hypebeast/go-osc
@@ -77,9 +80,9 @@ M8  go get gitlab.com/gomidi/midi/v2 github.com/hypebeast/go-osc
 
 ## Milestones
 
-- [ ] M0 Freeze the spec; grow `testdata/examples` to 10 programs
-- [ ] M1 Lexer (done), parser, AST printer (golden tests, fuzzing)
-- [ ] M2 Evaluator and REPL for plain expressions
+- [x] M0 Freeze the spec; grow `testdata/examples` to 10 programs
+- [x] M1 Lexer (done), parser, AST printer (golden tests, fuzzing)
+- [x] M2 Evaluator and REPL for plain expressions
 - [ ] M3 Pattern engine, mini-notation, `show`
 - [ ] M4 Scheduler and stub engine on a fake clock
 - [ ] M5 First sound: audio device, rings, registry, graph compiler, voices

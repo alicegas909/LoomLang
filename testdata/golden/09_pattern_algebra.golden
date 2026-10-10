@@ -1,0 +1,40 @@
+ExprStmt
+  Apply
+    Ident bpm
+    Number 140
+
+Assign target=root
+  Note c2
+
+Assign target=bassline
+  PatternExpr
+    Repeat 2
+      Seq
+        Splice
+          Ident root
+        Rest
+        Alt
+          Atom Note f2
+          Atom Note g2
+        Rest
+
+Attach target=bass
+  Ident bassline
+
+Attach target=bass
+  Binary |>
+    PatternExpr
+      Stack
+        Seq
+          Fast
+            Splice
+              Ident root
+            Factor
+              Number 2
+        Seq
+          Alt
+            Atom Note c2
+            Atom Note g2
+    Apply
+      Ident slow
+      Number 2

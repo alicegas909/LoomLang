@@ -17,8 +17,8 @@ type Value struct {
 
 // Event is one occurrence of a value.
 type Event struct {
-	Whole Span  // the event's full extent
-	Part  Span  // the portion inside the query span
+	Whole Span // the event's full extent
+	Part  Span // the portion inside the query span
 	Value Value
 }
 

@@ -1,0 +1,10 @@
+# quantized live edits and transport controls
+bpm 96
+kit = channel (synth { out = sample })
+@4 kit <- [bd*4, [~ hh]*8]
+@8 kit <- [bd sn bd sn]
+solo kit
+mute lead
+unmute lead
+show kit
+hush

@@ -1,0 +1,17 @@
+# synth parameters plus per-channel mix and send properties
+bpm 110
+flute = synth {
+  param cutoff = 2000
+  param res    = 0.2
+  osc = tri
+  out = osc >> lpf cutoff res
+}
+pad = synth {
+  param attack = 0.4
+  out = saw * adsr attack 0.5 0.7 1.0
+}
+lead = channel flute
+pad.channel = channel pad
+lead.cutoff = 800
+lead.send.reverb = 0.25
+pad.gain = 0.6

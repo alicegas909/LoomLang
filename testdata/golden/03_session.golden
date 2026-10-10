@@ -1,0 +1,117 @@
+ExprStmt
+  Apply
+    Ident bpm
+    Number 120
+
+Assign target=pluck
+  SynthDef
+    SynthStmt param cutoff
+      Number 1200
+    SynthStmt osc
+      Binary *
+        Binary +
+          Ident saw
+          Apply
+            Ident saw
+            Binary *
+              Ident freq
+              Number 1.01
+        Number 0.5
+    SynthStmt filt
+      Binary >>
+        Ident osc
+        Apply
+          Ident lpf
+          Ident cutoff
+          Number 0.3
+    SynthStmt out
+      Binary *
+        Ident filt
+        Apply
+          Ident adsr
+          Number 0.01
+          Number 0.3
+          Number 0.4
+          Number 0.5
+
+Assign target=kit
+  Apply
+    Ident channel
+    SynthDef
+      SynthStmt out
+        Ident sample
+
+Assign target=echo
+  Apply
+    Ident bus
+    Apply
+      Ident delay
+      Number 0.375
+      Number 0.5
+
+Assign target=lead
+  Apply
+    Ident channel
+    Ident pluck
+
+Assign target=lead.fx
+  Apply
+    Ident hpf
+    Number 120
+
+Assign target=lead.gain
+  Number 0.8
+
+Assign target=lead.send.echo
+  Number 0.3
+
+Attach target=kit
+  PatternExpr
+    Stack
+      Seq
+        Fast
+          Atom Ident bd
+          Factor
+            Number 4
+      Seq
+        Fast
+          Seq
+            Rest
+            Atom Ident hh
+          Factor
+            Number 4
+      Seq
+        Fast
+          Seq
+            Rest
+            Atom Ident sn
+          Factor
+            Number 2
+
+Attach target=lead
+  Binary |>
+    PatternExpr
+      Fast
+        Seq
+          Atom Note a2
+          Atom Note c3
+          Atom Note e3
+          Atom Note g3
+        Factor
+          Number 2
+    Apply
+      Ident every
+      Number 4
+      Ident rev
+
+Attach target=lead.pan
+  Apply
+    Ident sine
+    Number 0.25
+
+Attach target=lead.cutoff
+  PatternExpr
+    Alt
+      Atom Number 800
+      Atom Number 1600
+      Atom Number 3200

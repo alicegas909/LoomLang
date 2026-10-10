@@ -1,0 +1,34 @@
+ExprStmt
+  Apply
+    Ident bpm
+    Number 120
+
+Assign target=kit
+  Apply
+    Ident channel
+    SynthDef
+      SynthStmt out
+        Ident sample
+
+Attach target=kit
+  PatternExpr
+    Stack
+      Seq
+        Fast
+          Atom Ident bd
+          Factor
+            Number 4
+      Seq
+        Fast
+          Seq
+            Rest
+            Atom Ident hh
+          Factor
+            Number 4
+      Seq
+        Fast
+          Seq
+            Rest
+            Atom Ident sn
+          Factor
+            Number 2

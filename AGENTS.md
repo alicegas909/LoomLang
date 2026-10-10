@@ -6,26 +6,44 @@ authoritative design/milestone doc; `docs/grammar.ebnf` is the parser spec.
 
 ## Current state (verify before assuming things work)
 
-- Real code lives only in `internal/lexer` (complete + tested), `internal/pattern/rat.go`,
-  `internal/eval/env.go`, `internal/sched/clock.go` (`FakeClock`), and
-  `internal/engine/units/registry.go`.
-- `internal/parser`, `internal/eval`, `internal/sched`, `internal/repl`,
-  `internal/engine`, all `internal/engine/units/*` units, and graph/command/pattern
-  combinators are stubs returning `ErrNotImplemented` / marked `TODO(M...)`.
-- `parser_test.go` and `FuzzParse` are `t.Skip`ped until M1. `go test ./...`
-  "passing" does **not** mean the parser works.
-- The parser (M1) is the next milestone. It must build on the existing lexer.
+- Real code: `internal/lexer` (complete + tested), `internal/ast` (node types +
+  `Dump` printer), `internal/parser` (Pratt expression parser +
+  recursive-descent pattern sub-parser), `internal/pattern/rat.go`,
+  `internal/eval` (value model + tree-walker for plain expressions), `internal/repl`
+  (plain and readline front-ends), `cmd/loom`, `internal/sched/clock.go`
+  (`FakeClock`), `internal/engine/units/registry.go`.
+- Still stubs returning `ErrNotImplemented` / `TODO(M...)`: `internal/sched`,
+  `internal/engine`, all `internal/engine/units/*` units, and
+  graph/command/pattern combinators.
+- M1 parser works: expressions, patterns, statements, synth defs and line
+  continuations parse, with golden AST dumps. Syntax errors recover per
+  statement: `Parse` returns the statements it built plus an `ErrorList` of
+  `*SyntaxError`s, so one block reports every mistake. Do **not** apply the
+  returned statements when the error is non-nil.
+- M2 evaluator works for the plain-expression core only: numbers (notes become
+  MIDI numbers), strings, variables, arithmetic, curried lambdas, `|>`/`>>` and
+  application. `synth`, `channel`, `attach`, dotted paths and patterns return a
+  `*RuntimeError` naming the milestone that implements them. `Eval` returns
+  `eval.Result{Value, Commands}`; a failed submission is rolled back, and
+  `parser.Incomplete` + `eval.ErrIncomplete` let the REPL keep reading an
+  unfinished line. `repl.Run` is the testable io.Reader loop; `RunInteractive`
+  adds readline history/editing. A submission of `quit` (see `repl.QuitWord`)
+  ends the session; it is REPL-only, not a language keyword.
+- `parser_test.go`, `FuzzParse`, `internal/eval/*_test.go` and
+  `internal/repl/repl_test.go` are live.
 
 ## Commands
 
-- First run after editing stubs: `make fmt` (gofmt) — stub files predate the
-  compiler; `internal/pattern/pattern.go` is not currently gofmt-clean.
+- Run `make fmt` (gofmt) after editing; stub-authored files occasionally drift.
 - `make test` / `make race` / `make vet` / `make build` / `make run`
 - Single test: `go test ./internal/lexer -run TestSpacingFlags -v`
 - Fuzz: `make fuzz` (= `go test ./internal/parser -fuzz=FuzzParse -fuzztime=30s`);
   the lexer has `FuzzLex`. Fuzz targets must never panic or hang.
-- Go 1.22, **no third-party dependencies yet**. Add them only at the milestone
-  listed in README (`readline` M2, `malgo` M5, `wav` M6, MIDI/OSC M8).
+- Golden AST dumps: `go test ./internal/parser -run TestGolden`; regenerate after
+  intended parser changes with `... -run TestGolden -update`.
+- The only third-party dependency is `github.com/ergochat/readline` (M2). Add
+  others only at the milestone listed in README (`malgo` M5, `wav` M6,
+  MIDI/OSC M8).
 
 ## Architecture constraints
 
@@ -51,7 +69,7 @@ authoritative design/milestone doc; `docs/grammar.ebnf` is the parser spec.
 ## Test fixtures
 
 - `testdata/examples/*.loom` are parser fixtures, not runnable programs.
-- `testdata/golden/` is for expected AST dumps (only `.gitkeep` so far).
+- `testdata/golden/*.golden` are `ast.DumpStmts` snapshots of those fixtures.
 
 ## Separate module
 

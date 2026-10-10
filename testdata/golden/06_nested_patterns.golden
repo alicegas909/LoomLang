@@ -1,0 +1,68 @@
+ExprStmt
+  Apply
+    Ident bpm
+    Number 132
+
+Attach target=lead
+  PatternExpr
+    Stack
+      Seq
+        Seq
+          Atom Note c4
+          Atom Note e4
+        Atom Note g4
+      Seq
+        Fast
+          Seq
+            Atom Note a4
+            Rest
+          Factor
+            Number 2
+
+Attach target=bass
+  Binary |>
+    Binary |>
+      PatternExpr
+        Alt
+          Atom Note c2
+          Atom Note g2
+      Apply
+        Ident every
+        Number 2
+        Ident rev
+    Apply
+      Ident fast
+      Number 2
+
+Attach target=drums
+  PatternExpr
+    Stack
+      Seq
+        Euclid 3 8 0
+          Atom Ident bd
+      Seq
+        Fast
+          Seq
+            Rest
+            Atom Ident cp
+          Factor
+            Number 4
+      Seq
+        Repeat 2
+          Seq
+            Rest
+            Rest
+            Degrade 0.4
+              Atom Ident ht
+
+Attach target=chords
+  Binary /
+    PatternExpr
+      Fast
+        Seq
+          Atom Note c3
+          Atom Note e3
+          Atom Note g3
+        Factor
+          Number 2
+    Number 2

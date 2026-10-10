@@ -1,0 +1,10 @@
+# multi-line continuations and lambda pipelines
+bpm 128
+double = \x -> x * 2
+transpose = \n semi -> n + semi
+lead <- [c3 e3 g3]
+  |> fast 2
+  |> every 4 rev
+lead <- [c3 e3 g3] |> every 4 (\x -> x >> rev)
+total = (1 +
+  2 * 3)

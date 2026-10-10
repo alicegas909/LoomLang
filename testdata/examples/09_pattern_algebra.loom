@@ -1,0 +1,6 @@
+# pattern algebra: alternation, stacks, splices and rests
+bpm 140
+root = c2
+bassline = [$root ~ <f2 g2> ~]!2
+bass <- bassline
+bass <- [$root*2, <c2 g2>] |> slow 2
